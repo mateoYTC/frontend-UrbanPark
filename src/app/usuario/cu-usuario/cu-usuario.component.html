@@ -1,0 +1,19 @@
+<form >
+    <div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Nombre</label>
+  <input type="text" *ngIf="usuario" class="form-control" id="nombre" name="nombre" placeholder="Nombre usuario" [(ngModel)]="usuario.Nombre">
+</div>
+<div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Carro</label>
+  <input type="text" *ngIf="usuario" class="form-control" id="auto" name="auto" placeholder="Marca Auto" [(ngModel)]="usuario.Carro">
+</div>
+<div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Cedula</label>
+  <input type="text" *ngIf="usuario" class="form-control" id="auto" name="auto" placeholder="CC/CE" [(ngModel)]="usuario.Cedula">
+</div>
+
+<div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Placa</label>
+  <input type="text" *ngIf="usuario" class="form-control" id="auto" name="auto" placeholder="Placa" [(ngModel)]="usuario.Placa">
+</div>
+</form>

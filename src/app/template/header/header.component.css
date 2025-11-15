@@ -1,0 +1,106 @@
+.urban-navbar {
+  background: #194569;
+  backdrop-filter: blur(20px);
+  padding: 15px 0;
+  border-bottom: 3px solid var(--secondary-color);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.urban-navbar.scrolled {
+  background: rgba(26, 82, 118, 0.98) !important;
+  padding: 10px 0;
+}
+
+.navbar-brand-urban {
+  font-weight: 800 !important;
+  font-size: 1.8rem !important;
+  color: white !important;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.nav-link-urban {
+  color: rgba(255,255,255,0.9) !important;
+  font-weight: 600;
+  padding: 12px 25px !important;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  position: relative;
+  margin: 0 5px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.nav-link-urban::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--secondary-color);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link-urban:hover {
+  color: white !important;
+  background: rgba(255,255,255,0.1);
+}
+
+.nav-link-urban:hover::before {
+  width: 70%;
+}
+
+.nav-link-urban.active {
+  background: var(--secondary-color);
+  color: white !important;
+}
+
+.cta-nav-button {
+  background: linear-gradient(45deg, var(--secondary-color), #f39c12);
+  color: white !important;
+  border-radius: 25px;
+  padding: 12px 30px !important;
+  font-weight: 700;
+  box-shadow: 0 5px 15px rgba(230, 126, 34, 0.4);
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.cta-nav-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(230, 126, 34, 0.6);
+}
+
+.navbar-toggler-urban {
+  border: 2px solid rgba(255,255,255,0.3);
+  padding: 8px 12px;
+}
+
+.navbar-toggler-urban:focus {
+  box-shadow: 0 0 0 2px var(--secondary-color);
+}
+
+@media (max-width: 991px) {
+  .nav-link-urban {
+    margin: 5px 0;
+    text-align: center;
+  }
+  
+  .cta-nav-button {
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+  }
+}

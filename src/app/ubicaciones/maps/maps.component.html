@@ -1,0 +1,34 @@
+<div class="map-section">
+  <div class="map-header">
+    <h1 class="map-title">¿DÓNDE ESTAMOS?</h1>
+  </div>
+  
+  <div class="map-container">
+    <div class="map-wrapper">
+      <google-map
+        height="100%"
+        width="100%"
+        [center]="center"
+        [zoom]="zoom"
+        [options]="mapOptions"
+      >
+       
+        <map-marker
+          *ngFor="let parking of parkings"
+          [position]="parking.position"
+          [options]="markerOptions"
+          (mapClick)="openInfoWindow(parking)"
+          [title]="parking.name"
+        ></map-marker>
+
+        
+        <map-info-window>
+          <div *ngIf="selectedParking">
+            <h4>{{ selectedParking.name }}</h4>
+            <p>📍 Parqueadero disponible</p>
+          </div>
+        </map-info-window>
+      </google-map>
+    </div>
+  </div>
+</div>

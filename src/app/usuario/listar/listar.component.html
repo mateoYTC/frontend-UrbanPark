@@ -1,0 +1,172 @@
+<div class="justify-content-center container ">
+<div class="row justify-content-end">
+  <div class="col-lg-1 col-12" id="botonCrear">
+    <button  class="btn btn-crear" (click)="nuevoUsuario()"data-bs-toggle="modal" data-bs-target="#cuModal">✏️ Reservar</button>
+  </div>
+
+
+  <div class="d-flex justify-content-center" *ngIf="isLoading">
+    <div class="spinner-border" role=status>
+      <span class="visually-hidden">Loading...</span>
+      </div>
+  </div>
+
+
+  <table id="tabla" class="table table.table-striped table-hover" *ngIf="!isLoading">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Auto</th>
+      <th scope="col">Cedula</th>
+      <th scope="col">Placa</th>
+      <th scope="col">FechaEntrada</th>
+      <th scope="col">FechaSalida</th>
+      <th scope="col">Reserva</th>  
+      <th scope="col">Opciones</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let us of VectorUser">
+      <th scope="row">{{us.id}}</th>
+      <td>{{us.Nombre}}</td>
+      <td>{{us.Carro}}</td>
+      <td>{{us.Cedula}}</td>
+      <td>{{us.Placa}}</td>
+      <td>{{us.Registro_Entrada}}</td>
+      <td>{{us.Registro_Salida}}</td>
+      <td>{{us.Reserva}}</td> 
+      <td>
+        <button class="btn btn-success me-1 boton" (click)="registrarEntrada(us)">Entrada</button>
+        <button class="btn btn-danger me-1 boton" id="salida" (click)="registrarSalida(us)">Salida</button>
+        <button class="btn btn-warning me-1" data-bs-toggle="modal" data-bs-target="#cuModal"(click)="editarUsuario(us)">Editar 📝</button>
+        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmarEliminar" (click)="prepararEliminacion(us)">Eliminar 🗑️</button>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#pagar">Pagar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<div class="modal fade" id="cuModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">{{isNew?"Nuevo":"Editar"}} Usuario</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <app-cu-usuario [usuario]="usuarioSeleccion"></app-cu-usuario>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" (click)="guardarUsuario()">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="registerEntry" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Registrar Entrada</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <app-re-usuario [usuario]="usuarioSeleccion"></app-re-usuario>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" (click)="guardarUsuario()">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="registerExit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Registrar Salida</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <app-rs-usuario [usuario]="usuarioSeleccion"></app-rs-usuario>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" (click)="guardarUsuario()">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="confirmarEliminar" tabindex="-1" aria-labelledby="confirmarEliminarLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="confirmarEliminarLabel">Confirmar Eliminación</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de eliminar al usuario <strong>{{usuarioAEliminar?.Nombre}}</strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmarEliminacion()">Sí, Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="pagar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" #pagarModal>
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Pago</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="formPago">
+          
+          <div class="mb-3">
+            <label class="form-label">Método de pago</label>
+            <select class="form-select" formControlName="metodo">
+              <option value="" disabled selected>Seleccione una opción</option>
+              <option value="efectivo">Efectivo</option>
+              <option value="nequi">Nequi</option>
+            </select>
+          </div>
+
+          
+          <div class="mb-3">
+            <label for="valor" class="form-label">Valor a pagar</label>
+            <input
+              type="number"
+              class="form-control"
+              id="valor"
+              formControlName="valor"
+              placeholder="Ingrese el monto"
+              min="1000"
+            />
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="realizarPago()">Pagar</button>
+      </div>
+
+    </div>
+  </div>
+</div>

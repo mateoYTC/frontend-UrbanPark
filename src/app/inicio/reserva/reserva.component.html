@@ -1,0 +1,286 @@
+<!-- PASO 1: DATOS DE LA RESERVA -->
+<div *ngIf="pasoActual === 1" class="reserva-container">
+  <div class="card shadow border-0">
+    <div class="card-header bg-primary text-white position-relative">
+      <h3 class="mb-0">RESERVA AQUÍ</h3>
+      <small>Reserva tu espacio de parqueo con anticipación</small>
+      <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" 
+              data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label fw-bold">Fecha y hora de ingreso</label>
+          <input 
+            type="datetime-local" 
+            class="form-control"
+            [(ngModel)]="fechaEntrada"
+            (change)="calcularTarifa()"
+          >
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-bold">Fecha y hora de salida</label>
+          <input 
+            type="datetime-local" 
+            class="form-control"
+            [(ngModel)]="fechaSalida"
+            (change)="calcularTarifa()"
+          >
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-bold">Tipo de vehículo</label>
+        <div class="btn-group w-100" role="group">
+          <button 
+            type="button" 
+            class="btn btn-outline-primary"
+            [class.active]="tipoVehiculo === 'carro'"
+            (click)="tipoVehiculo = 'carro'; calcularTarifa()"
+          >
+            Automóvil - $25.000 día
+          </button>
+          <button 
+            type="button" 
+            class="btn btn-outline-primary"
+            [class.active]="tipoVehiculo === 'moto'"
+            (click)="tipoVehiculo = 'moto'; calcularTarifa()"
+          >
+            Motocicleta - $15.000 día
+          </button>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label fw-bold">Placa</label>
+        <input 
+          type="text" 
+          class="form-control text-uppercase"
+          [(ngModel)]="placa"
+          placeholder="Ej: ABC123"
+          (input)="calcularTarifa()"
+        >
+      </div>
+
+      <div *ngIf="tarifaCalculada" class="alert alert-info">
+        <h6>Resumen de tarifa:</h6>
+        <div *ngIf="tarifaCalculada.dias_totales > 0">
+          <small>{{ tarifaCalculada.dias_totales }} día(s) x ${{ tipoVehiculo === 'carro' ? '25.000' : '15.000' }}</small><br>
+        </div>
+        <div *ngIf="tarifaCalculada.horas_totales > 0 && tarifaCalculada.dias_totales === 0">
+          <small>{{ tarifaCalculada.horas_totales }} hora(s) x ${{ tipoVehiculo === 'carro' ? '4.000' : '3.500' }}</small><br>
+        </div>
+        <hr class="my-2">
+        <strong>Total: ${{ tarifaCalculada.total | number }}</strong>
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <div class="d-grid">
+        <button 
+          class="btn btn-primary btn-lg"
+          (click)="avanzarPaso1()"
+          [disabled]="!tarifaCalculada"
+        >
+          RESERVAR
+        </button>
+      </div>
+
+      <div class="mt-3 text-center">
+        <small class="text-muted">
+          Complete todos los campos para calcular la tarifa.
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PASO 2: REGISTRO DE USUARIO -->
+<div *ngIf="pasoActual === 2" class="reserva-container">
+  <div class="card shadow border-0">
+    <div class="card-header bg-primary text-white position-relative">
+      <h3 class="mb-0">PASO 2</h3>
+      <small>Complete sus datos personales</small>
+      <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" 
+              data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    
+    <div class="card-body">
+      <div class="mb-4">
+        <label class="form-label fw-bold">Cédula</label>
+        <div class="input-group">
+          <input 
+            type="text" 
+            class="form-control"
+            [(ngModel)]="cedula"
+            placeholder="Ingrese su cédula"
+          >
+          <button 
+            class="btn btn-outline-secondary" 
+            type="button"
+            (click)="buscarUsuario()"
+          >
+            Buscar
+          </button>
+        </div>
+        <small *ngIf="usuarioExistente" class="text-success">
+          ✓ Usuario encontrado. Complete los datos faltantes.
+        </small>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label fw-bold">Nombres</label>
+          <input 
+            type="text" 
+            class="form-control"
+            [(ngModel)]="nombres"
+            placeholder="Sus nombres"
+          >
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-bold">Apellidos</label>
+          <input 
+            type="text" 
+            class="form-control"
+            [(ngModel)]="apellidos"
+            placeholder="Sus apellidos"
+          >
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label fw-bold">Celular</label>
+          <input 
+            type="tel" 
+            class="form-control"
+            [(ngModel)]="celular"
+            placeholder="Número de celular"
+          >
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-bold">Email</label>
+          <input 
+            type="email" 
+            class="form-control"
+            [(ngModel)]="email"
+            placeholder="correo@ejemplo.com"
+          >
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <button class="btn btn-secondary w-100" (click)="retrocederPaso()">
+            REGRESAR
+          </button>
+        </div>
+        <div class="col-6">
+          <button class="btn btn-primary w-100" (click)="avanzarPaso2()">
+            CONTINUAR
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PASO 3: CONFIRMACIÓN -->
+<div *ngIf="pasoActual === 3" class="reserva-container">
+  <div class="card shadow border-0">
+    <div class="card-header bg-primary text-white position-relative">
+      <h3 class="mb-0">CONFIRMAR RESERVA</h3>
+      <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" 
+              data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong>Nombre:</strong> {{ nombres }} {{ apellidos }}
+        </div>
+        <div class="col-md-6">
+          <strong>Celular:</strong> {{ celular }}
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <strong>Email:</strong> {{ email }}
+        </div>
+        <div class="col-md-6">
+          <strong>Placa:</strong> {{ placa | uppercase }}
+        </div>
+      </div>
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <strong>Ingreso:</strong> {{ formatearFecha(fechaEntrada) }}
+        </div>
+        <div class="col-md-6">
+          <strong>Salida:</strong> {{ formatearFecha(fechaSalida) }}
+        </div>
+      </div>
+
+      <div class="border rounded p-3 mb-4">
+        <div *ngIf="tarifaCalculada.dias_totales > 0" class="d-flex justify-content-between">
+          <span>${{ tipoVehiculo === 'carro' ? '25.000' : '15.000' }} x {{ tarifaCalculada.dias_totales }} días</span>
+          <span>${{ tarifaCalculada.subtotal | number }}</span>
+        </div>
+        <div *ngIf="tarifaCalculada.horas_totales > 0 && tarifaCalculada.dias_totales === 0" class="d-flex justify-content-between">
+          <span>${{ tipoVehiculo === 'carro' ? '4.000' : '3.500' }} x {{ tarifaCalculada.horas_totales }} horas</span>
+          <span>${{ tarifaCalculada.subtotal | number }}</span>
+        </div>
+        
+        <hr>
+        <div class="d-flex justify-content-between mt-2 fs-5 text-primary">
+          <strong>Total</strong>
+          <strong>${{ tarifaCalculada.total | number }}</strong>
+        </div>
+      </div>
+
+      
+
+      <div class="mb-4">
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="terminos" #terminos>
+          <label class="form-check-label" for="terminos">
+            He leído y acepto la política de privacidad y tratamiento de datos.
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="notificaciones" #notificaciones>
+          <label class="form-check-label" for="notificaciones">
+            Acepto envío de información a mi celular de la información relacionada con la reserva.
+          </label>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <button class="btn btn-secondary w-100" (click)="retrocederPaso()">
+            REGRESAR
+          </button>
+        </div>
+        <div class="col-6">
+          <button 
+            class="btn btn-success w-100" 
+            (click)="confirmarReserva(terminos.checked, notificaciones.checked)"
+          >
+            CONFIRMAR
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

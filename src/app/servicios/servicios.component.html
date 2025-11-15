@@ -1,0 +1,51 @@
+<div class="servicios-container">
+  <h1 class="titulo-principal">SERVICIOS</h1>
+  
+  <div class="carousel-wrapper">
+    <button class="nav-button prev" (click)="previous()" [disabled]="!canGoPrevious()">
+      ‹
+    </button>
+
+    <div class="servicios-grid">
+      <!-- Tarjeta 1 - TAG FLYPASS -->
+      <div class="servicio-card">
+        <div class="card-content">
+          <div class="icon-container">
+            <i class="fa-solid fa-credit-card"></i>
+          </div>
+          <h2 class="servicio-titulo">TAG</h2>
+          <h3 class="servicio-subtitulo">FLYPASS</h3>
+          <p class="servicio-descripcion">Paga el parqueo con tu cuenta de FlyPass. Si aún no la tienes, solicítala en nuestro punto de atención.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta 2 - LAVADO -->
+      <div class="servicio-card">
+        <div class="card-content">
+          <div class="icon-container">
+            <i class="fa-solid fa-spray-can-sparkles"></i>
+          </div>
+          <h2 class="servicio-titulo">LAVADO</h2>
+          <h3 class="servicio-subtitulo">ESPECIALIZADO</h3>
+          <p class="servicio-descripcion">Usamos productos ecológicos especializados para el cuidado y mantenimiento de tu vehículo.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta 3 - VALET PARKING -->
+      <div class="servicio-card">
+        <div class="card-content">
+          <div class="icon-container">
+            <i class="fa-solid fa-car"></i>
+          </div>
+          <h2 class="servicio-titulo">VALET</h2>
+          <h3 class="servicio-subtitulo">PARKING</h3>
+          <p class="servicio-descripcion">Recogemos tu vehículo en el aeropuerto, y a tu llegada, te lo regresamos hasta el aeropuerto.</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="nav-button next" (click)="next()" [disabled]="!canGoNext()">
+      ›
+    </button>
+  </div>
+</div>
